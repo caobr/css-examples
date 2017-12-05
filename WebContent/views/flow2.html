@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>块状元素的流体特性2-两栏自适应效果</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <style type="text/css">
+	html {
+		background-color: #fff;
+	}
+	.flow-box{
+	    width: 500px; 
+	    background-color: #eee;
+	    overflow: auto;
+	    resize:horizontal;
+	}
+	.flow-content {
+		margin-left: 150px;
+	} 
+	.flow-content img {
+	    width: 100%; 
+	    height: 190px;
+	}
+  </style>
+</head>
+
+<body>
+	<!-- resize拉伸（现代浏览器，且非移动访问），会发现，左侧永远150像素留白，而图片随着容器宽度变化而自适应变化了 -->
+	<!-- 此时需要好好利用左侧150像素的留白间距，就可以实现两栏自适应效果！不影响原本的流体特性，可以使用破坏性属性，如浮动(float:left)，或者绝对定位(position:absolute) -->
+	<div class="flow-box">
+		<img src="../imgs/mm1.jpg" style="float: left; " width="128">
+<!-- 		<img src="../imgs/mm1.jpg" style="position:absolute; " width="128"> -->
+		<div class="flow-content">
+			<img src="../imgs/mm1.jpg">
+		</div>
+	</div>	
+	
+	
+</body>
+</html>

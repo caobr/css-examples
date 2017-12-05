@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>层叠上下文和层叠顺序</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<p>层叠领域的两个黄金准则:</p>
+	<ul>
+		<li>谁大谁上：当具有明显的层叠水平标示的时候，如识别的z-indx值，在同一个层叠上下文领域，层叠水平值大的那一个覆盖小的那一个。通俗讲就是官大的压死官小的。</li>
+		<li>后来居上：当元素的层叠水平一致、层叠顺序相同的时候，在DOM流中处于后面的元素会覆盖前面的元素。</li>
+	</ul>
+	
+	<hr>
+	<div>
+		<div style="position: relative; z-index: auto;">
+			<!-- 横妹纸 -->
+			<img src="../imgs/mm1.jpg" style="position: absolute; z-index: 2;">
+		</div>
+		<div style="position: relative; z-index: auto;">
+			<!-- 竖妹子 -->
+			<img src="../imgs/mm2.jpg" style="position: relative; z-index: 1;">
+		</div>
+	</div>
+
+	<p>
+	z-index:0所在的<em>div</em>元素是层叠上下文元素,而z-index:auto所在的<em>div</em>元素是一个普通的元素.于是,里面的两个<em>img</em>妹子的层叠比较就不受父级的影响,两者直接套用层叠黄金准则.
+	这里,两者有着明显不一的z-index值,因此遵循“谁大谁上”的准则,于是，z-index为2的那个横妹子就趴在了z-index为1的竖妹子身上,
+	</p>
+
+	<div>
+		<div style="position:relative; z-index:0;">
+			<!-- 横妹纸 -->
+	    	<img src="../imgs/mm1.jpg" style="position:absolute; z-index:2;">
+		</div>
+		<div style="position:relative; z-index:0;">
+			<!-- 竖妹子 -->
+			<img src="../imgs/mm2.jpg" style="position:relative; z-index:1;">
+		</div>
+	</div>
+	
+	<b>z-index:0实际上和z-index:auto单纯从层叠水平上看，是可以看成是一样的。注意这里的措辞——“单纯从层叠水平上看”，实际上，两者在层叠上下文领域有着根本性的差异。
+	z-index为auto时是普通元素，z-index值不是auto的时候（变为数值时），就会创建层叠上下文。
+	</b>
+	
+	<p>
+	z-index一旦变成数值,哪怕是0,都会创建一个层叠上下文.此时层叠规则就发生了变化.两个<em>img</em>妹子的层叠顺序比较变成了优先比较其父级层叠上下文元素的层叠顺序.由于两者都是z-index:0,层叠顺序这一块两者一样大.
+	此时遵循层叠黄金准则的另外一个准则“后来居上”,根据在DOM流中的位置决定谁在上面,于是位于后面的竖着的妹子就自然而然趴在了横着的妹子身上.对,没错,<em>img</em>元素上的z-index打酱油了.
+	</p>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>被嵌套iframe</title>
+<style>
+.green {
+	color: green;
+}
+body {
+	margin: 0;
+}
+pre{
+  font:14px/1.3 Consolas, Monaco, monospace;
+  padding:5px 10px;
+  margin:0;
+  white-space:pre-wrap;
+  word-wrap:break-word;
+}
+</style>
+</head>
+
+<body>
+<pre>iframe内：self === parent    // <span id="result" class="green"></span></pre>
+<script>
+document.getElementById('result').innerHTML = (self === parent);
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>使用JS把文本内容作为html文件下载</title>
+</head>
+<body>
+<textarea rows="11" cols="50%">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>测试</title>
+</head>
+
+<body>
+<h1>测试</h1>
+</body>
+</html>
+</textarea>
+<p><input type="button" value="作为test.html文件下载"></p>
+</body>
+
+<script type="text/javascript">
+var eleTextarea = document.querySelector('textarea');
+var eleButton = document.querySelector('input[type="button"]');
+
+/*可以将文本或者JS字符串信息借助Blob转换成二进制，然后，作为<a>元素的href属性，配合download属性，实现下载*/
+/**
+ * 不止是.html文件，.txt, .json等只要内容是文本的文件，都是可以利用这种小技巧实现下载的。
+ * 在Chrome浏览器下，模拟点击创建的<a>元素即使不append到页面中，也是可以触发下载的，但是在Firefox浏览器中却不行.
+ * 因此，下面的funDownload()方法有一个appendChild和removeChild的处理，就是为了兼容Firefox浏览器
+ */
+// 下载文件方法
+var funDownload = function (content, filename) {
+    var eleLink = document.createElement('a');
+    eleLink.download = filename;
+    eleLink.style.display = 'none';
+    // 字符内容转变成blob地址
+    var blob = new Blob([content]);
+    eleLink.href = URL.createObjectURL(blob);
+    // 触发点击
+    document.body.appendChild(eleLink);
+    eleLink.click();
+    // 然后移除
+    document.body.removeChild(eleLink);
+};
+
+if ('download' in document.createElement('a')) {
+    // 作为test.html文件下载
+    eleButton.addEventListener('click', function () {
+        funDownload(eleTextarea.value, 'test.html');    
+    });
+} else {
+    eleButton.onclick = function () {
+        alert('浏览器不支持');    
+    };
+}
+</script>
+</html>

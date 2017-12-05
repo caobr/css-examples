@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style type="text/css">
+.radius-test1 { width: 100px; height: 100px; border: 50px solid #cd0000; border-radius: 50%; }
+.radius-test2 { width: 100px; height: 100px; border: 50px solid #cd0000; border-radius: 300px; }
+
+.radius-test3 { width: 100px; height: 200px; border: 50px solid #cd0000; border-radius: 50%; }
+.radius-test4 { width: 100px; height: 200px; border: 50px solid #cd0000; border-radius: 500px; }
+</style>
+</head>
+<body>
+<div class="radius-test1"></div>
+<div class="radius-test2"></div>
+
+<div class="radius-test3"></div>
+<!-- border-radius大值特性，也就是值很大的时候，只会使用能够渲染的圆角大小渲染。 -->
+<div class="radius-test4"></div>
+</body>
+</html>

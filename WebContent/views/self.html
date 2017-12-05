@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>self全局变量及闭包</title>
+<style type="text/css">
+pre {
+    font: 14px/1.3 Consolas, Monaco, monospace;
+    padding: 5px 10px;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+</style>
+</head>
+<body>
+
+
+<iframe src="include.html" width="100%" height="50" frameborder="0"></iframe>
+<pre>iframe外：self === parent    // <span id="result" class="green"></span></pre>
+
+<button onclick="aa(false)">变量</button>
+</body>
+
+<script type="text/javascript">
+document.getElementById('result').innerHTML = (self === parent);
+
+
+var funcs = []
+/* for (var i = 0; i < 10; i++) {
+    funcs.push(function() { console.log(i+ ":" + new Date().getTime()) })
+} */
+
+ 
+var i='global';
+function constfuncs(){
+   var i=10;
+   var func=function(){
+       console.log(i);
+   }
+   return func;
+}
+var f=constfuncs();
+f();
+
+// ES5告诉我们可以利用闭包解决这个问题
+/* for (var i = 0; i < 10; i++) {
+    funcs.push((function(value) {
+        return function() {
+            console.log(value + ":" + new Date().getTime())
+        }
+    }(i)))
+} */
+
+//es6
+/* for (let i = 0; i < 10; i++) {
+    funcs.push(function() {
+        console.log(i)
+    })
+} */
+funcs.forEach(function(func) {
+    func()
+})
+</script>
+</script>
+</html>

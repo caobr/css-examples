@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>块级格式化上下文BFC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <style type="text/css">
+	html {
+		overflow: hidden;
+	}
+	body {
+		width: 400px;
+		margin: 0;
+	}
+	.float-left {
+		float: left;
+	}
+	.follow-content {
+		background-color: #cad5eb;
+		letter-spacing: 5px;
+	}
+	</style>
+</head>
+
+<body>
+	<!-- BFC元素特性表现原则就是，内部子元素再怎么翻江倒海，翻云覆雨都不会影响外部的元素。所以，避免margin穿透啊，清除浮动什么的也好理解了 -->
+	<!-- 常见的触发BFC的情况如下：
+		1)float的值不为none。
+		2)overflow的值为auto,scroll或hidden。
+		3)display的值为table-cell, table-caption, inline-block中的任何一个。
+		4)position的值不为relative和static。
+	 -->
+	 
+	 <!-- 普通流体元素BFC后，为了和浮动元素不产生任何交集，顺着浮动边缘形成自己的封闭上下文.同时，元素原本的流体特性依然保留了.
+	 也就是，虽然不与浮动交集，自动退避浮动元素宽度的距离，但，本身作为普通元素的流动性依然存在，反映在布局上就是自动填满除去浮动内容以外的剩余空间。哟，这不就是自适应布局嘛！
+	  -->
+	
+	<p><button>跟随div添加overflow:hidden触发BFC</button></p>
+	<img src="http://image.zhangxinxu.com/image/study/s/s128/mm1.jpg" height="96" width="128" class="float-left">
+	<div class="follow-content">
+	低版本IE浏览器有个hasLayout的概念，不过这玩意太老生常谈，而且也过时了，我现在无力再吐槽。总而言之，言而总之，就特性表现而言，很多时候和BFC这个概念很像。
+	</div>
+
+
+</body>
+<script>
+var button = document.getElementsByTagName("button")[0], 
+	div = document.getElementsByTagName("div")[0];
+if (button) {
+	button.initValue = button.innerHTML;
+	button.onclick = function() {
+		if (this.innerHTML == this.initValue) {
+			div.style.overflow = "hidden";
+			this.innerHTML = "还原";
+		} else {
+			div.style.overflow = "";
+			this.innerHTML = this.initValue;
+		}
+	}
+}
+</script>
+</html>

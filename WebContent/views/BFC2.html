@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>块级格式化上下文BFC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <style type="text/css">
+	html {
+		overflow: hidden;
+	}
+	body {
+		width: 400px;
+		margin: 0;
+	}
+	.float-left {
+		float: left;
+		width: 128px;
+	    height: 96px;
+	    margin-right: 20px;
+	    -webkit-animation: size 1s infinite alternate;
+	    animation: size 1s infinite alternate;
+	}
+	.follow-content {
+		background-color: #cad5eb;
+		letter-spacing: 5px;
+		overflow: hidden;
+	}
+	
+	/* CSS3 @keyframes 规则:以百分比来规定改变发生的时间，或者通过关键词 "from" 和 "to"，等价于 0% 和 100%。
+		0% 是动画的开始时间，100% 动画的结束时间。为了获得最佳的浏览器支持，您应该始终定义 0% 和 100% 选择器。 */
+	/* size为动画名 */
+	@-webkit-keyframes size {
+		to {
+			width: 256px;
+			height: 192px;
+		}
+	}
+	@keyframes size {
+		to {
+			width: 256px;
+			height: 192px;
+		}
+	}
+	</style>
+</head>
+
+<body>
+<div>
+	<!-- BFC元素家族与自适应布局面面观：
+	理论上，任何BFC元素和浮动搞基的时候，都可以实现自动填充的自适应布局。但是，由于绝大多数的触发BFC的属性自身有一些古怪的特性，所以，实际操作的时候，能兼顾流体特性和BFC特性来实现无敌自适应布局的属性并不多。
+	下面我们牵驴遛马一个一个瞅瞅（类似行为仅出1个代表示意，你懂的，如float:left/right）：
+
+	1)float:left 浮动元素本身BFC化，然而浮动元素有破坏性和包裹性，失去了元素本身的流体自适应性，因此，无法用来实现自动填满容器的自适应布局。不过，其因兼容性还算良好，与堆积木这种现实认知匹配，上手简单，因此在旧时代被大肆使用，也就是常说的“浮动布局”，也算阴差阳错开创了自己的一套布局。
+	2)position:absolute 这个脱离文档流有些严重，过于清高，不跟普通小伙伴玩耍，我就不说什么了……
+	3)overflow:hidden 这个超棒的哦！不像浮动和绝对定位，玩得有点过。也就是溢出剪裁什么的，本身还是个很普通的元素。因此，块状元素的流体特性保存相当完好，附上BFC的独立区域特性，可谓如虎添翼，宇宙无敌！However, 就跟清除浮动：
+	一样。由于很多场景我们是不能overflow:hidden的，因此，无法作为一个通用CSS类整站大规模使用。float+overflow的自适应布局，可以在局部（你确定不会有什么被剪裁的情况下）很happy地使用。
+	<b style="color: red;">.clearfix{*zoom:1;}.clearfix:before,.clearfix:after{display:table;content:"";}.clearfix:after{clear:both;}</b>
+	4)display:inline-block CSS届最伟大的声明之一，但是，在这里，就有些捉襟见肘了。display:inline-block会让元素尺寸包裹收缩，完全就不是我们想要的block水平的流动特性。 IE6/IE7浏览器下，block水平的元素设置display:inline-block元素还是block水平，也就是还是会自适应容器的可用宽度显示。
+	于是，我们就阴差阳错得到一个比overflow:hidden更牛逼的声明，即BFC特性加身，又流体特性保留。
+	5)display:table-cell 让元素表现得像单元格一样，IE8+以上浏览器才支持。跟display:inline-block一样，会跟随内部元素的宽度显示，看样子也是不合适的命。但是，单元格有个非常神奇的特性，就是你宽度值设置地再大，大到西伯利亚，实际宽度也不会超过表格容器的宽度。
+	因此，如果我们把display:table-cell这个BFC元素宽度设置很大，比方说3000像素。那其实就跟block水平元素自动适应容器空间效果一模一样了。除非你的容器宽度超过3000像素，实际上，一般web页面不会有3000像素宽的模块的。所以，要是你实在不放心，设个9999像素值好了！
+	有两点制约，一是IE8+以上浏览器兼容，有些苦逼的团队还要管IE6；二是应付连续英文字符换行有些吃力（可以嵌套table-layout:fixed解决）。但是，总体来看，适用的场景要比overflow:hidden广博很多.
+	6)display:table-row 对width无感，无法自适应剩余容器空间。
+	7)display:table-caption 一无是处……还有其他声明也都是一无是处，我就不全部展开了…
+	总结：我们对BFC声明家族大致过了一遍，能担任自适应布局重任的也就是：
+	overflow:auto/hidden IE7+
+	display:inline-block IE6/IE7
+	display:table-cell IE8+
+	overflow有剪裁和出现滚动条等隐患，不适合作为整站通用类
+	类似清除浮动的通用类语句:.clearfix {*zoom: 1;}.clearfix:after {content: ''; display: table; clear: both;}
+	两栏或多栏自适应布局的通用类语句是（block水平标签，需配合浮动）：.cell {display: table-cell; width: 9999px;  *display: inline-block; *width: auto;} -->
+</div>
+	
+	<!-- BFC自适应布局优势总结：
+		   自适应内容由于封闭，更健壮，容错性强。比方说，内部clear:both不会与兄弟float产生矛盾。而纯流体布局，clear:both会让后面内容无法和float元素在一个水平上，产生布局问题。
+		   自适应内容自动填满浮动以为区域，无需关心浮动元素宽度，可以整站大规模应用。而纯流体布局，需要大小不确定的margin/padding等值撑开合适间距，无法CSS组件化。
+	 -->
+
+	<img src="http://image.zhangxinxu.com/image/study/s/s128/mm1.jpg" height="96" width="128" class="float-left">
+	<div class="follow-content">
+	低版本IE浏览器有个hasLayout的概念，不过这玩意太老生常谈，而且也过时了，我现在无力再吐槽。总而言之，言而总之，就特性表现而言，很多时候和BFC这个概念很像。
+	</div>
+	
+	
+</body>
+</html>

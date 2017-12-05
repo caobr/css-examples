@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>flex子元素是层叠上下文元素</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <style type="text/css">
+	.box {width:280px;}
+	.box > div {
+		background-color: blue;
+		z-index: 1; }    /* 此时该div是普通元素，z-index无效 */
+	.box > div > img { 
+  		position: relative;
+  		z-index: -1; 
+  		right: -150px;     /* 注意这里是负值z-index */
+	}
+	
+	.box1 {width:280px; display: flex;}
+	.box1 > div {
+		background-color: blue;
+		z-index: 1; }    /* 此时该div是层叠上下文元素，同时z-index生效 */
+	.box1 > div > img { 
+  		position: relative;
+  		z-index: -1; 
+  		right: -150px;     /* 注意这里是负值z-index */
+	}
+	
+	
+  </style>
+</head>
+
+<body>
+	<p><img src="../imgs/stackContext.png"><br>负值z-index的层叠顺序在block水平元素的下面，而蓝色背景div元素是个普通元素，因此，妹子直接穿越过去，在蓝色背景后面的显示了。</p>
+	<div class="box">
+	    <div>
+	    	<img src="../imgs/mm1.jpg">
+	    </div>
+	</div>
+	
+	<p>
+	负值z-index的层叠顺序在当前第一个父层叠上下文元素的上面,而此时，那个z-index值为1的蓝色背景<em>div</em>的父元素的display值是flex,一下子升官发财变成层叠上下文元素了.于是图片在蓝色背景上面显示了.
+	这个现象也证实了层叠上下文元素是flex子元素，而不是flex容器元素.
+	<br>另外，这个例子也颠覆了我们传统的对z-index的理解。在CSS2.1时代，z-index属性必须和定位元素一起使用才有作用，但是，在CSS3的世界里，非定位元素也能和z-index愉快地搞基。
+	</p>
+	<div class="box1">
+	    <div>
+	    	<img src="../imgs/mm1.jpg">
+	    </div>
+	</div>
+	
+</body>
+</html>
